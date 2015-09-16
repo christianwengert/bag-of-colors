@@ -1,0 +1,117 @@
+This package contains the bag-of-colors signature extracted published in 
+
+| Christian Wengert, Matthijs Douze and Hervé Jégou,
+| Bag of colors for improved image search
+| Proc. ACM Multimedia'11, November, 2011. 
+
+
+It also provides an evaluation framework to evaluate the global signature 
+extraction. 
+
+There are several paramaters (number of colors, normalization type's, distance
+type, etc) that can be changed. The default is for a codebook comprising 256 
+colors and with almost optimal parameters with respect to the search accuracy. 
+
+
+CONTENT
+-------
+
+The purpose of the files in the bag_of_colors_package/ root directory
+is as follows:
+
+
+config_boc.m             The configuration file, that contains both the library
+                         paths and parameters for the descriptor generation. 
+
+compute_main_colors.m    Extract the main colors using the procedure detailled
+                         in the paper. Note that this step is costly. Therefore
+                         the output of this stage (performed on the Flickr60K
+                         dataset) is already provided and stored in the matlab 
+                         file 'maincolors.mat'
+
+learn_color.m            Learn the color codebook using the maincolors
+
+compute_color_histo.m    Function that compute the histogram of colors from an 
+                         input image
+
+boc_from_histo.m         Convert an histogram of color into the descriptor
+
+launch_compute_boc.m     compute the set of BOC for a given dataset
+
+evaluate_boc.m           Compute the retrieval score 
+
+
+make_ppmsmall.sh         This script was used to reduce the size of the images. 
+                         Since we provide the images from Holidays already 
+                         resized, you should not need it. 
+                         It is required only if you want to consider a new 
+                         dataset. 
+
+
+The subdirectories contain the following:
+
+utils/      contains some basic functions, evaluation functions,
+            and configuration files for the dataset.
+            Changing the paths in the config_* files if needed.
+
+flickr60k/  In this directory, we provide some data extracted from our Flickr60K
+            dataset. It is used for the learning stage only.
+            We provide pre-computed dominant colors, color palettes. 
+            The images are not provided itself, due to copyright reasons,
+            but any large enough dataset of images from Flickr could do the job. 
+
+holidays/   This directory contains the ground-truth used to compute the score. 
+            It will also contain the re-sized images downloaded in the additional 
+            package.
+
+
+PRE-REQUISITES
+--------------
+
+The yael library, more precisely with a working Matlab interface, is required 
+to have a working and efficient execution of this package
+
+Install a recent yael library. 
+The last version can be obtained (with open-source license) at 
+
+https://gforge.inria.fr/projects/yael/
+
+
+If you want to do all steps yourself, the INRIA holidays dataset is required.  
+You can download the set at
+
+http://pascal.inrialpes.fr/data/holidays/jpg1.tar.gz
+and
+http://pascal.inrialpes.fr/data/holidays/jpg2.tar.gz
+
+Use the make_ppmsmall.sh script to resize and preprocess the images.
+   
+
+INSTALLATION AND EXECUTION
+--------------------------
+
+First, you have to download and install Yael. Once you get a working 
+yael, you should adapt the config_boc.m M-file to adapt the paths to your 
+configuration, and to the desired parameters. 
+
+The package must be used with some data that are provided in a separate archive. 
+Download it from our website:
+
+  wget http://www.kooaba.com/docs/holidays_16384pix.zip
+
+and extract it in the root directory of the package. This additional package 
+contains the re-sized and normalized images (created with make_ppmsmall.sh). 
+
+
+Then, you should be able to execute the following matlab commands to 
+produce and evaluate global BOC descriptors. 
+
+> learn_color          % Learn a color codebook
+                       % This stage is not mandatory, as we already give
+                       % some pre-computed codebooks
+
+
+> launch_compute_boc   % Compute the histogram of colors and BOC vectors
+
+> evaluate_boc         % Compute the mAP value (by default, on Holidays)
+
