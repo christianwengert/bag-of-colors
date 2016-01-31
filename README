@@ -1,3 +1,8 @@
+Bag-of-colors for improved image search
+
+
+[Paper](https://hal.inria.fr/inria-00614523/document)
+
 This package contains the bag-of-colors signature extracted published in 
 
 | Christian Wengert, Matthijs Douze and Hervé Jégou,
